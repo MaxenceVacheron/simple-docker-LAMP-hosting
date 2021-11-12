@@ -1,27 +1,30 @@
-FROM  php:8.0-apache-buster
+FROM  php:7.3-apache-buster
 
-# Setting up Apache2 conf <--- IF NOT USING VOLUMES IN DOCKER-COMPOSE.YML
-# COPY docker/conf/apache2/000-default.conf /etc/apache2/sites-available/
+# Setting up Apache2 conf
+COPY docker/conf/apache2/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Allowing access to Apache2
-RUN chown -R www-data:www-data "/var/www"
+RUN chown -R www-data:www-data "/var/www/html"
 
 # Letting Apache2 accessing any file.
 RUN usermod -u 1000 www-data
 RUN usermod -G staff www-data
 
 RUN apt-get update && \
-    apt-get install -y -qq wget
-        # libjpeg62-turbo-dev \
-        # apt-transport-https \
-        # libfreetype6-dev \
-        # libmcrypt-dev \
-        # libssl-dev \
-        # zip unzip \
-        # nodejs \
-        # npm \
-        # git \
-        # vim
+    apt-get install -y -qq wget \
+# libjpeg62-turbo-dev \
+# apt-transport-https \
+# libfreetype6-dev \
+# libmcrypt-dev \
+# libssl-dev \
+zip unzip \
+# nodejs \
+# npm \
+git 
+# vim
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # RUN pecl install redis && docker-php-ext-enable redis
 # RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
@@ -30,8 +33,8 @@ RUN apt-get update && \
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 
-# SYMFONY
-# RUN for mod in rewrite headers; do a2enmod $mod; done && a2enmod ssl && service apache2 restart
+# SYMFONY/LARAVEL
+RUN for mod in rewrite headers; do a2enmod $mod; done && a2enmod ssl && service apache2 restart
 
 # HTTPS (KO)
 # RUN openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \

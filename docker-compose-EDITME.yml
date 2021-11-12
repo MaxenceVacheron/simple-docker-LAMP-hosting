@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
     volumes:
-      - ./src/group-929495/exemple-app/:/var/www/html
+      - ./src//:/var/www/html
     networks:
       - project-api
     ports:

@@ -43,6 +43,7 @@ $ git clone git@github.com:MaxenceVacheron/simple-docker-LAMP.git
 ```
 
 You can then simply insert your HTML/PHP files in ```src/```.
+It is advised to set the volume accordingly in the docker-compose.yml file
 
 ### You can both build and up the containers with:  
 ```bash
